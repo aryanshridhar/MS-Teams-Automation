@@ -1,0 +1,39 @@
+{
+    "Monday" : [
+        {
+            "time" : "8:00-8:45",
+            "meeting" : "A1+TA1+TAA1",
+            "type" : "Theory"
+        },
+        {
+            "time" : "9:00-9:45",
+            "meeting" : "F1- CSE2005-Operating Systems",
+            "type" : "Theory"
+
+        },
+        {
+            "time" : "10:00-10:45",
+            "meeting" : "VL2020210106574 - D1 - CSE2004",
+            "type" : "Theory"
+
+        },        {
+            "time" : "11:00-11:45",
+            "meeting" : "Computer Architecture and Organization B1",
+            "type" : "Theory"
+
+        },
+        {
+            "time" : "12:00-12:45",
+            "meeting" : "CSE1007 - JAVA PROGRAMMING - THEORY",
+            "type" : "Theory"
+
+        },
+        {
+            "time" : "4:00-5:30",
+            "meeting" : "CSE1007 - JAVA PROGRAMMING - THEORY",
+            "type" : "Lab"
+        }
+    ],
+
+    "Tuesday" : []
+}

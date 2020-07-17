@@ -1,0 +1,12 @@
+.
+├── assets
+│   ├── agenda.json
+│   └── credentials.json
+├── automate.py
+├── Chrome-Driver
+│   └── V83
+│       └── chromedriver
+├── filestructure.txt
+└── requirements.txt
+
+3 directories, 6 files
