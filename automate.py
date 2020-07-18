@@ -10,6 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from selenium.webdriver.common.action_chains import ActionChains
+from webdriver_manager.chrome import ChromeDriverManager
+
+
 
 class Teams:
     def __init__(self):
@@ -20,7 +23,7 @@ class Teams:
         self.opts.add_argument('--ignore-ssl-errors')
         self.opts.add_argument("--use-fake-ui-for-media-stream")
 
-        self.browser = Chrome(executable_path = 'Chrome-Driver/V83/chromedriver' , chrome_options=self.opts)
+        self.browser = Chrome(chrome_options=self.opts)
 
         self.link = 'https://www.microsoft.com/en-in/microsoft-365/microsoft-teams/group-chat-software'
         self.x = 1600
@@ -80,17 +83,20 @@ class Teams:
         web_app_btn.click()
 
 
-    def join_group(self , class_name):
+    def join_group(self):
+        WebDriverWait(self.browser, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="team-19:67d95a0697b745fea24dd0dee8ba1ddb@thread.tacv2"]/a/div[1]'))
+    ).click()
+        # time.sleep(10)
+        # all_user_groups = WebDriverWait(self.browser, 20).until(
+        #     EC.presence_of_element_located((By.CLASS_NAME, self.team_name_id))
+        # )
+        # all_user_groups = self.browser.find_elements_by_class_name(self.team_name_id)
 
-        all_user_groups = WebDriverWait(self.browser, 20).until(
-            EC.presence_of_element_located((By.CLASS_NAME, self.team_name_id))
-        )
-        all_user_groups = self.browser.find_elements_by_class_name(self.team_name_id)
-
-        for group in range(0 ,len(all_user_groups)):
-            if all_user_groups[group].text.lower() == class_name.lower():
-                all_user_groups[group].click()
-                break
+        # for group in range(0 ,len(all_user_groups)):
+        #     if all_user_groups[group].text.lower() == class_name.lower():
+        #         all_user_groups[group].click()
+        #         break
 
 
     def mute_audio(self):
@@ -150,17 +156,21 @@ class Teams:
     
 
     def hang_call(self):
-        sleep(20)
-        WebDriverWait(self.browser, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
+        WebDriverWait(self.browser, 20).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '#app-bar-2a84919f-59d8-4441-a975-2a8c2643b741'))
     ).click()
-    	
+        time.sleep(20)
+    #     time.sleep(20)
+    #     WebDriverWait(self.browser, 10).until(
+    #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
+    # ).click()
         hangup_btn = WebDriverWait(self.browser, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR,"button[data-tid='call-hangup']"))
         )
         time.sleep(50) # For a 50 minute class
         print(hangup_btn)
         hangup_btn.click() 
+        
 
 
 
@@ -176,11 +186,12 @@ def main():
     t1.add_credentials()
     t1.popup_login()
     t1.popup_ad()
-    t1.join_group('own') # For example
+    t1.join_group() # For example
     t1.join_meeting()
     t1.hang_call()
             
 
 if __name__ == "__main__":
     main()
-    
+
+#es-bottom-overlay
