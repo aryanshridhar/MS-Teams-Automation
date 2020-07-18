@@ -147,13 +147,14 @@ class Teams:
     def getchats(self):
         pass
 
-    def get_bar(self):
-    	WebDriverWait(self.browser, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
-    ).click()##Clicks on main screen to get the bar 
+    
 
     def hang_call(self):
-    	self.get_bar() ##makes the bar accessible 
+        sleep(20)
+        WebDriverWait(self.browser, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
+    ).click()
+    	
         hangup_btn = WebDriverWait(self.browser, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR,"button[data-tid='call-hangup']"))
         )
