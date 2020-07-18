@@ -149,7 +149,7 @@ class Teams:
 
     def get_bar(self):
     	WebDriverWait(self.browser, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="page-content-wrapper"]/div[1]/div/calling-screen/div/div[2]/div[2]/div[3]/calling-stage/div/calling-participant-stream/div'))
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
     ).click()##Clicks on main screen to get the bar 
 
     def hang_call(self):
