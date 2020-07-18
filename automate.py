@@ -10,6 +10,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from selenium.webdriver.common.action_chains import ActionChains
+from webdriver_manager.chrome import ChromeDriverManager
+
+
 
 class Teams:
     def __init__(self):
@@ -79,9 +82,8 @@ class Teams:
         web_app_btn = self.browser.find_element_by_class_name(self.popup_id)
         web_app_btn.click()
 
-
     def join_group(self , class_name):
-
+    
         all_user_groups = WebDriverWait(self.browser, 20).until(
             EC.presence_of_element_located((By.CLASS_NAME, self.team_name_id))
         )
@@ -91,7 +93,7 @@ class Teams:
             if all_user_groups[group].text.lower() == class_name.lower():
                 all_user_groups[group].click()
                 break
-
+    
 
     def mute_audio(self):
         
@@ -147,15 +149,24 @@ class Teams:
     def getchats(self):
         pass
 
+    
 
     def hang_call(self):
-
+        WebDriverWait(self.browser, 20).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, '#app-bar-2a84919f-59d8-4441-a975-2a8c2643b741'))
+    ).click()
+        time.sleep(20)
+    #     time.sleep(20)
+    #     WebDriverWait(self.browser, 10).until(
+    #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
+    # ).click()
         hangup_btn = WebDriverWait(self.browser, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR,"button[data-tid='call-hangup']"))
         )
         time.sleep(50) # For a 50 minute class
         print(hangup_btn)
-        hangup_btn.click()
+        hangup_btn.click() 
+        
 
 
 
@@ -178,4 +189,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
+#es-bottom-overlay
