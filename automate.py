@@ -23,7 +23,7 @@ class Teams:
         self.opts.add_argument('--ignore-ssl-errors')
         self.opts.add_argument("--use-fake-ui-for-media-stream")
 
-        self.browser = Chrome(executable_path = 'Chrome-Driver/V83/chromedriver' , chrome_options=self.opts)
+        self.browser = Chrome( chrome_options=self.opts)
 
         self.link = 'https://www.microsoft.com/en-in/microsoft-365/microsoft-teams/group-chat-software'
         self.x = 1600
@@ -59,7 +59,7 @@ class Teams:
             EC.presence_of_element_located((By.ID, self.login_id))
         )
         email_field.send_keys(credentials['email'] , Keys.ENTER)
-
+        time.sleep(10)
         password_field = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.ID, self.password_id))
         )
@@ -82,10 +82,13 @@ class Teams:
         web_app_btn = self.browser.find_element_by_class_name(self.popup_id)
         web_app_btn.click()
 
-    def join_group(self , class_name):
+    def join_group(self,class_name):
+    	# WebDriverWait(self.browser, 20).until(
+        #     EC.element_to_be_clickable((By.XPATH, '//*[@id="team-19:30f0d046718e4a1bae2ec35e08c2bc2c@thread.tacv2"]/a'))
+        # ).click()
     
         all_user_groups = WebDriverWait(self.browser, 20).until(
-            EC.presence_of_element_located((By.CLASS_NAME, self.team_name_id))
+            EC.presence_of_element_located((By.XPATH, '//*[@id="team-19:67d95a0697b745fea24dd0dee8ba1ddb@thread.tacv2"]/a'))
         )
         all_user_groups = self.browser.find_elements_by_class_name(self.team_name_id)
 
@@ -136,26 +139,51 @@ class Teams:
             )
 
             join_button.click()
-
-    
+    def get_chat(self):
+        #gets latest chat
+        chats=[]
+        for chat in self.browser.find_elements_by_css_selector('div > div.ts-middle-messages-container.flex-fill > div > div > message-list > div > virtual-repeat > div'):	
+            message = chat.find_element_by_css_selector("#messageBody > div:nth-child(2) > see-more > div > div > div").get_attribute('innerHTML')
+            #author_name_encoded = author_name.encode('utf-8').strip()
+            #message_encoded = message.encode('utf-8').strip()
+            obj = json.dumps({'message': message})
+            chats.append(json.loads(obj))
+        print(chats)
     def show_chat(self):
-
+        
         background = self.browser.find_element_by_css_selector('div > div.video-stream-container')    
         hover = ActionChains(self.browser).move_to_element(background)
         hover.perform()
         chat_btn = self.browser.find_element_by_css_selector('#callingButtons-showMoreBtn > ng-include > svg')
         chat_btn.click()
-
-    def getchats(self):
-        pass
-
-    
-
-    def hang_call(self):
-        WebDriverWait(self.browser, 20).until(
+    #click form needs modification
+    # def click_form(self):
+    #     form_btn = WebDriverWait(self.browser, 40).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR," div > div > label:nth-child(1)"))
+    #     )	
+    #     time.sleep(10)
+    #     form_btn.click()
+    #     vote_sub=WebDriverWait(self.browser, 40).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR," div.card-body > div > div:nth-child(5) > div:nth-child(1) > div > button"))
+    #     )
+    #     vote_sub.click()
+        
+    def min_window(self):
+    	WebDriverWait(self.browser, 20).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, '#app-bar-2a84919f-59d8-4441-a975-2a8c2643b741'))
     ).click()
+    def get_time(self):
+    	
+    	time =WebDriverWait(self.browser, 30).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,"calling-duration > span"))
+        )
+    	curr_time=time.text()
+
+    	print(curr_time)
+    def hang_call(self):
+        
         time.sleep(20)
+        self.min_window()
     #     time.sleep(20)
     #     WebDriverWait(self.browser, 10).until(
     #     EC.element_to_be_clickable((By.CSS_SELECTOR, 'calling-myself-video > div > div.user-avatar-container'))
@@ -184,6 +212,10 @@ def main():
     t1.popup_ad()
     t1.join_group('own') # For example
     t1.join_meeting()
+    t1.min_window()
+    t1.get_chat()
+    # t1.click_form()
+
     t1.hang_call()
             
 
